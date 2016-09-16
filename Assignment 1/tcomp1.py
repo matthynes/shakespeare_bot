@@ -4,6 +4,8 @@ import sys
 # get relevant command line arguments
 import collections
 
+import math
+
 args = sys.argv[1:]
 
 # check if enough args given
@@ -16,40 +18,32 @@ def ngramify(file, n):
         os.path.join(os.getcwd(), os.path.dirname(__file__), file))
     ngram = []
     with open(__location__) as f:
-        lines = f.read().splitlines()
+        lines = f.read().split()
         for line in lines:
-            # line = list(line)
+            line = line.strip()
             ngram += list(zip(*[line[i:] for i in range(n)]))
     return ngram
 
 
 def sim(ngram1, ngram2):
-    # freq1 = collections.Counter(ngram1)
-    # freq2 = collections.Counter(ngram2)
-    #
-    # ng1s = float(len(ngram1))
-    # ng2s = float(len(ngram2))
-    #
-    # for f, n in freq1.items():
-    #     freq1[f] = (n / ng1s)
-    # for f, n in freq2.items():
-    #     freq2[f] = (n / ng2s)
-    # c = 0
-    # for ff, nn in freq1.items():
-    #     if ff in freq2:
-    #         c += (nn + freq2[ff])
-    #
-    # return 1.0 - (c)
-    ngset1 = set(ngram1)
-    ngset2 = set(ngram2)
+    freq1 = collections.Counter(ngram1)
+    freq2 = collections.Counter(ngram2)
 
-    common = ngset1.intersection(ngset2)
-    all = ngset1.union(ngset2)
+    for f in freq1:
+        freq1[f] = float(freq1[f]) / len(ngram1)
 
-    if common:
-        return round(len(common) / float(len(all)), 3)
-    else:
-        return 0.0
+    for f in freq2:
+        freq2[f] = float(freq2[f]) / len(ngram2)
+
+    diff = {}
+
+    for f in freq1:
+        if f in freq2:
+            diff[f] = abs(freq1[f] - freq2[f])
+
+    diff_sum = sum(diff.values())
+
+    return round(1.0 - (diff_sum / 2), 3) if diff_sum else 0.0
 
 
 if __name__ == '__main__':
