@@ -14,10 +14,10 @@ if len(sys.argv) < 4:
 
 
 def ngramify(file, n):
-    __location__ = os.path.realpath(
+    __path__ = os.path.realpath(
         os.path.join(os.getcwd(), os.path.dirname(__file__), file))
     ngram = []
-    with open(__location__) as f:
+    with open(__path__) as f:
         lines = f.read().split()
         for line in lines:
             line = line.strip()
@@ -51,7 +51,13 @@ if __name__ == '__main__':
     n = int(args[1])
     file_list = args[2:]
 
+    sims = {}
+
     ngram_master = ngramify(master_file, n)
     for file in file_list:
         ngram_file = ngramify(file, n)
-        print 'Sim("', master_file, '","', file, '")=', sim(ngram_master, ngram_file)
+        result = sim(ngram_master, ngram_file)
+        print 'Sim("{0}","{1}")={2}'.format(master_file, file, result)
+        sims[file] = result
+    print "{0} is most similar to {1}".format(max(sims.iterkeys(), key=lambda x: sims[x]),
+                                              master_file)

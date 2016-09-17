@@ -36,7 +36,6 @@ if __name__ == '__main__':
 
     for file in file_list:
         result = round(sim(master_file, file), 3)
-        #    print 'Sim("', master_file, '","', file, '")=', result
         print 'Sim("{0}","{1}")={2}'.format(master_file, file, result)
         sims[file] = result
 
