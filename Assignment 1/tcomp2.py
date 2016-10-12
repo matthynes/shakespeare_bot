@@ -1,13 +1,36 @@
+#########################################################
+##  CS 4750 (Fall 2016), Assignment #1, Question #2    ##
+##   Script File Name: tcomp2.py                       ##
+##       Student Name: Matthew Hynes                   ##
+##         Login Name: mrh830                          ##
+##              MUN #: 201200318                       ##
+#########################################################
+
+"""
+This program calculates the similarity between two or more text files based on the formula:
+Sim(X, Y) = 1.0 - (SD(X, Y) / (nW(X) + nW(Y))), where nW(X) and nW(Y) are the numbers of words that
+occur in X and Y and SD(X, Y) is the total number of words that occur uniquely in X or Y.
+
+It accepts, as command line arguments, a master text file and one or more additional
+text files. It will then output the similarity of each additional as compared to the master text
+file and finally state which file is most similar to it.
+"""
+
 import os
 import sys
 
 args = sys.argv[1:]
+
+# check if enough args given
+if len(args) < 2:
+    print 'usage: python tcomp2.py filename filename1 filename2 ...'
 
 
 def nw(file):
     __path__ = os.path.realpath(
         os.path.join(os.getcwd(), os.path.dirname(__file__), file))
 
+    # read file and return a list of unique words
     with open(__path__, 'r') as f:
         lines = f.read().split()
         return set(lines)
