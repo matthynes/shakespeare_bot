@@ -53,9 +53,9 @@ def composeFST(fst1, fst2):
             trans2 = t2[0]
 
             if trans1.split('/')[1] == trans2.split('/')[0]:
-                fr[comp] = OrderedDict()
-                fr[comp][(trans1.split('/')[1] + '/' + trans2.split('/')[0])] = (
-                    t1[1] + ',' + t2[1])
+                if comp not in fr:
+                    fr[comp] = OrderedDict()
+                fr[comp][(trans1.split('/')[1] + '/' + trans2.split('/')[0])] = t1[1] + ',' + t2[1]
 
     return fr
 
@@ -67,9 +67,11 @@ def reconstructUpper(l, fst):
         upper = [c[0] for c in chars]
         lower = [c[1] for c in chars]
 
-        for i in range(len(lower)):
-            if l == lower[i]:
-                print upper[i]
+        for ch in l:
+            for i in range(len(lower)):
+                if ch == lower[i] or (lower[i] == '-' or ch == '-'):
+                    if q[2] == 'F':
+                        print upper[i]
 
 
 def reconstructLower(u, fst):
@@ -79,14 +81,19 @@ def reconstructLower(u, fst):
         upper = [c[0] for c in chars]
         lower = [c[1] for c in chars]
 
-        for i in range(len(upper)):
-            if u == upper[i]:
-                print lower[i]
+        for ch in u:
+            for i in range(len(upper)):
+                if ch == upper[i] or (upper[i] == '-' or ch == '-'):
+                    if q[2] == 'F':
+                        print lower[i]
 
 
 if __name__ == '__main__':
     f = readFST('test1.fst')
     f2 = readFST('test2.fst')
+
+    reconstructLower('b', f)
+    reconstructUpper('c', f2)
 
     fr = composeFST(f, f2)
     pass
