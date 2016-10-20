@@ -3,6 +3,12 @@ import os
 import sys
 from collections import OrderedDict
 
+args = sys.argv[1:]
+
+# check if enough args given
+if len(args) < 3:
+    print 'usage: python tcomp1.py filename n filename1 filename2 ...'
+
 
 def readFST(filename):
     name, ext = os.path.splitext(filename)
@@ -89,11 +95,15 @@ def reconstructLower(u, fst):
 
 
 if __name__ == '__main__':
-    f = readFST('test1.fst')
-    f2 = readFST('test2.fst')
+    sur_low = args[0]
+    wlsf = args[1]
+    file_list = args[2:]
 
-    reconstructLower('b', f)
-    reconstructUpper('c', f2)
+    fsts = []
 
-    fr = composeFST(f, f2)
+    for f in file_list:
+        __path__ = os.path.realpath(
+            os.path.join(os.getcwd(), os.path.dirname(__file__), f))
+        fsts.append(readFST(f))
+
     pass
