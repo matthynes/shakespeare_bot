@@ -1,0 +1,13 @@
+tpbdeoszSZP
+potPs
+podPs
+poSPs
+poZPs
+SopPs
+ZopPs
+doPs
+dopPs
+bots
+bodz
+boSes
+boZes
