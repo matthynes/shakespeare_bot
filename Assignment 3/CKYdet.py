@@ -13,13 +13,30 @@ def CKYparse(ckyf, uttf):
     __path__ = os.path.realpath(
         os.path.join(os.getcwd(), os.path.dirname(__file__), ckyf))
 
-    grammar = collections.defaultdict(str)
+    grammar = collections.defaultdict(list)
 
     with open(__path__, 'r') as cf:
         for line in cf.readlines():
-            rhs, lhs = line.strip().split(' -> ')
-            grammar[rhs] = lhs
-    
+            lhs, rhs = line.strip().split(' -> ')
+            grammar[lhs].append(rhs)
+
+    __path__ = os.path.realpath(
+        os.path.join(os.getcwd(), os.path.dirname(__file__), uttf))
+
+    with open(__path__, 'r') as uf:
+        lines = uf.readlines()
+
+    for line in lines:
+        line = line.strip()
+        n = len(line.split())
+        matrix = [[None for x in range(n + 1)] for y in range(n + 1)]
+
+        for j in range(1, n):
+            for k in range(j - 1, 0, -1):
+                for nt in grammar.keys():
+                    print nt
+                    matrix[j][k] = []
+
 
 if __name__ == '__main__':
     ckyfile = args[0]
