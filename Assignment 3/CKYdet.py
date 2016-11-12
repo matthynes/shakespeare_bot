@@ -9,7 +9,7 @@ if len(args) != 2:
     print 'usage: python CKYdet.py eCNF_file utterance_file'
 
 
-def CKYparse(ckyf, uttf):
+def cky_parse(ckyf, uttf):
     __path__ = os.path.realpath(
         os.path.join(os.getcwd(), os.path.dirname(__file__), ckyf))
 
@@ -20,6 +20,13 @@ def CKYparse(ckyf, uttf):
             lhs, rhs = line.strip().split(' -> ')
             grammar[lhs].append(rhs)
 
+    def is_non_terminal(rhs):
+        for k, v in grammar.iteritems():
+            for r in rhs.split():
+                if r in v:
+                    return k
+        return ''
+
     __path__ = os.path.realpath(
         os.path.join(os.getcwd(), os.path.dirname(__file__), uttf))
 
@@ -27,15 +34,30 @@ def CKYparse(ckyf, uttf):
         lines = uf.readlines()
 
     for line in lines:
-        line = line.strip()
-        n = len(line.split())
-        matrix = [[None for x in range(n + 1)] for y in range(n + 1)]
+        line = line.strip().split()
+        n = len(line)
+        matrix = [[None for _ in range(n + 1)] for _ in range(n + 1)]
 
-        for j in range(1, n):
-            for k in range(j - 1, 0, -1):
-                for nt in grammar.keys():
-                    print nt
-                    matrix[j][k] = []
+        for j in range(n):
+            for k in range(n + 1):
+                matrix[j][k] = []
+
+        for j in range(1, n + 1):
+            matrix[j - 1][j] = '"' + line[j - 1] + '"'
+
+        for i in range(1, n + 1):
+            for j in range(i - 2, -1, -1):
+                for k in range(j + 1, i):
+                    if matrix[j][k] and matrix[k][i]:
+                        rhs = matrix[j][k] + ' ' + matrix[k][i]
+                        lhs = is_non_terminal(rhs)
+                        if lhs:
+                            matrix[j][i] = lhs
+
+        if matrix[0][n]:
+            print matrix[0]
+        else:
+            print 'No valid parse.'
 
 
 if __name__ == '__main__':
@@ -52,4 +74,4 @@ if __name__ == '__main__':
         print 'Utterance file must be of .utt type.'
         sys.exit(1)
 
-    CKYparse(ckyfile, uttfile)
+    cky_parse(ckyfile, uttfile)
