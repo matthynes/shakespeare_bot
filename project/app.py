@@ -13,13 +13,14 @@ auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
 
 api = tweepy.API(auth)
 
-state_size = 3
+STATE_SIZE = 3
+NUM_TWEETS = 24
 TWEET_INTERVAL = 60 * 60  # 60 * n = n-minute intervals
 
 with open(os.path.dirname(__file__) + '/corpus.txt', 'r') as corpus:
-    model = markovify.Text(corpus.read(), state_size=state_size)
+    model = markovify.Text(corpus.read(), state_size=STATE_SIZE)
 
-public_tweets = api.user_timeline(count=24)
+public_tweets = api.user_timeline(count=NUM_TWEETS)
 
 
 def generate_post():
@@ -31,7 +32,7 @@ def generate_post():
 
 
 def make_post(post):
-    # api.update_status(post)
+    api.update_status(post)
     print(post)
 
 
