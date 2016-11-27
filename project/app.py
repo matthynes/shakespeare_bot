@@ -6,7 +6,11 @@ import markovify
 import editdistance
 import pronouncing
 
+from flask import Flask
+
 from settings import CONSUMER_SECRET, CONSUMER_KEY, ACCESS_TOKEN_SECRET, ACCESS_TOKEN
+
+app = Flask(__name__)
 
 auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
 auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
@@ -17,7 +21,7 @@ STATE_SIZE = 3
 NUM_TWEETS = 24
 TWEET_INTERVAL = 60 * 60  # 60 * n = n-minute intervals
 
-with open(os.path.dirname(__file__) + '/corpus.txt', 'r') as corpus:
+with open(os.path.dirname(os.path.abspath(__file__)) + '/corpus.txt', 'r') as corpus:
     model = markovify.Text(corpus.read(), state_size=STATE_SIZE)
 
 public_tweets = api.user_timeline(count=NUM_TWEETS)
@@ -51,10 +55,13 @@ def is_iambic_pentameter(phrase):
     return sim >= 70.0
 
 
-if __name__ == '__main__':
+def main():
     while True:
         post = generate_post()
         if post:
             if is_iambic_pentameter(post):
                 make_post(post)
                 time.sleep(TWEET_INTERVAL)
+
+
+main()
