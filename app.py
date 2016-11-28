@@ -6,11 +6,7 @@ import markovify
 import editdistance
 import pronouncing
 
-from flask import Flask
-
 from settings import CONSUMER_SECRET, CONSUMER_KEY, ACCESS_TOKEN_SECRET, ACCESS_TOKEN
-
-app = Flask(__name__)
 
 auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
 auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
@@ -77,4 +73,5 @@ def main():
                 time.sleep(TWEET_INTERVAL)  # tweet every n minutes
 
 
-main()
+if __name__ == '__main__':
+    main()
