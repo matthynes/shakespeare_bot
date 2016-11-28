@@ -6,11 +6,7 @@ import markovify
 import editdistance
 import pronouncing
 
-from flask import Flask
-
 from settings import CONSUMER_SECRET, CONSUMER_KEY, ACCESS_TOKEN_SECRET, ACCESS_TOKEN
-
-app = Flask(__name__)
 
 auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
 auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
@@ -19,7 +15,7 @@ api = tweepy.API(auth)
 
 STATE_SIZE = 3
 NUM_TWEETS = 24
-TWEET_INTERVAL = 60 * 60  # 60 * n = n-minute intervals
+TWEET_INTERVAL = 60 * 30  # 60 * n = n-minute intervals
 MIN_SIM = 70.0
 
 # open corpus file and create markov model
@@ -77,4 +73,5 @@ def main():
                 time.sleep(TWEET_INTERVAL)  # tweet every n minutes
 
 
-main()
+if __name__ == '__main__':
+    main()
