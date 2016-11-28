@@ -15,7 +15,7 @@ api = tweepy.API(auth)
 
 STATE_SIZE = 3
 NUM_TWEETS = 24
-TWEET_INTERVAL = 60 * 60  # 60 * n = n-minute intervals
+TWEET_INTERVAL = 60 * 30  # 60 * n = n-minute intervals
 MIN_SIM = 70.0
 
 # open corpus file and create markov model
