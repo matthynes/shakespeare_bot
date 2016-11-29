@@ -15,8 +15,8 @@ api = tweepy.API(auth)
 
 STATE_SIZE = 3
 NUM_TWEETS = 24
-TWEET_INTERVAL = 60 * 30  # 60 * n = n-minute intervals
-MIN_SIM = 70.0
+TWEET_INTERVAL = 60 * 15  # 60 * n = n-minute intervals
+MIN_SIM = 70.0  # minimum similarity % to be considered iambic pentameter
 
 # open corpus file and create markov model
 with open(os.path.dirname(os.path.abspath(__file__)) + '/corpus.txt', 'r') as corpus:
@@ -28,6 +28,12 @@ public_tweets = api.user_timeline(count=NUM_TWEETS)
 
 def generate_post():
     post = model.make_short_sentence(140)
+
+    # convert uppercase words to title-case; this almost exclusively applies to character names
+    for word in post.split():
+        if word.isupper():
+            new_word = word.title()
+            post = post.replace(word, new_word)
 
     # make sure duplicate post has not been tweeted recently
     if post not in public_tweets:
