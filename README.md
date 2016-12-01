@@ -4,9 +4,8 @@ A Twitter bot that uses Markov chains to generate phrases in (mostly) iambic pen
 
 You can see it action [on Twitter](https://twitter.com/bardbot9000).
 
-Running the bot is simple:
-
-You will need to have Python 3.3+ installed.
+Running the bot is simple:</br>
+You will need to have Python 3.3+ installed.</br>
 
   1. Download or clone the repository
   2. run `pip install -r requirements.txt`, you can create a vritualenv first if you wish
@@ -16,7 +15,6 @@ You will need to have Python 3.3+ installed.
 That's it! The bot should now automatically tweet every n minutes (15 by default). All the relevant settings such as `TWEET_INTERVAL` and `STATE_SIZE` are at the top of the file, you may change them as you wish.
 
 This project makes use of the following fantastic libraries (in no particular order):
-
   * [marovify](https://github.com/jsvine/markovify)
   * [Tweepy](https://github.com/tweepy/tweepy)
   * [pronouncingpy](https://github.com/aparrish/pronouncingpy)
